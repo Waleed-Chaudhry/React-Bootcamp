@@ -64,5 +64,3 @@ npm run start //Starts the app on localhost:3000
   * To access the class red, use styles.red, not 'red'
   * Define the new styles in App.css, and add them to the HTML using: className={btnClass}
   * Conditionally change the value of btnClass using ```btnClass = styles.Red``` or ```btnClass = ''``` to remove the styling
-  
-### Debugging React Apps
