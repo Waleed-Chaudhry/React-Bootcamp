@@ -24,6 +24,11 @@ style[':hover'] = {
   color: 'black'  
 }
 
+<StyleRoot>
+   style={style}
+</StyleRoot>
+
+
 export default Radium(App); // Radium wraps around your app
 
 import Radium from 'radium'
@@ -33,5 +38,6 @@ const style = {
     width: '450px'
   }
 }
-
+<div className="Person" style={style}>
+  
 export default Radium(person);
