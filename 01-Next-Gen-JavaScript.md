@@ -23,6 +23,7 @@ export default person //To export using the traditional
 import prs from ./person.js //Will import the default export, else the function/var named prs
 import {person} from ./person.js //Will import the function named person, and assign it to person in the import file
 import {person as prs} from ./person.js //to use the function as prs in the import file
+import Person from '../components/Person/Person' //to go up one level
 ```
 
 ### Classes
