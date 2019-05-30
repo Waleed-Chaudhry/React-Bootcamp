@@ -1,7 +1,7 @@
 # Introduction
 
 ### Setup
-```
+```c
 npm install create-react-app -g //So that it's available from any dir on your computer
 create-react-app react-bootcamp --scripts-version 1.1.5
 npm run start //Starts the app on localhost:3000
@@ -16,176 +16,53 @@ npm run start //Starts the app on localhost:3000
 * Class based components have state which can be modified
 * You also add a CSS component to the class
 * Anytime you have {} inside JSX that means you can write JS code in there 
-* Adding radium: ```npm install --save radium```
 
-#### App.js
-```JavaScript
-import React, { Component } from 'react';
-// Behind the scenes, react calls React.createElement on the JSX to convert the JSX to HTML
-// Hence this import 
-import './App.css';
-import Person from './Person/Person'
-import Radium from 'radium'
+### Lists and Displaying Content Conditionally
+#### Conditionals:
+  * Add a boolean var to the state
+  * Use an event handler to update the state of that boolean var (togglerPersonsHandler in our code)
+  * Add the components to the HTML in the render() method based on the state of the boolean var
+  * Can also change the style conditionally using that boolean ```style.backgroundColor= 'red'```
 
-class App extends Component {
-  state = { // Managed from within the class only, it's only available for class (non-functional components)
-    // Used to let us change our HTML dynamically inside the parent class 
-    persons: [
-      { "id": 1, name:  "Max", age: "28" },
-      { "id": 2, name: "Manu", age: "29" },
-      { "id": 3, name: "Waleed", age: "24" }
-    ],
-    otherState: 'some other value',
-    showPersons: false //To control the conditional display of persons
-  }
+#### Lists:
+  * Declare the list as a regular JS array inside the state object
+  * Map that list to JSX elements in the render() method to add the list to the HTML
 
-  // Delete a given person by clicking on it
-  deletePersonHandler = (personIndex) => {
-    const persons = [...this.state.persons]; //Make a copy of the state first to not mutate state directly
-    persons.splice(personIndex, 1) //Removes the person from the array
-    this.setState({persons: persons})
-  }
+### Styling
+#### CSS
+  * Create CSS style classes in App.css (red and bold in our code)
+  * Push each of those classes to an array based on the state
+  * Add the array to the element you're trying to style in the render method ```<p className={classes.join(' ')}>This is really working!</p>```
+  * Can also add it like: ```<div className="Person" style={style}>``` in Person.js
 
-  // Using event (changing text inside textbox) to change the state 
-  nameChangedHandler = (event, id) => {
-    const personIndex = this.state.persons.findIndex(p => { 
-      return p.id === id;  
-    }) 
-    const person = {...this.state.persons[personIndex]}; //Find the person to change
-    person.name = event.target.value // Create a copy of the person to not mutate te state directly
-    const persons = [...this.state.persons];
-    persons[personIndex] = person;
-    this.setState({persons: persons}) // Will only change the persons object, not the otherState var
-  }
+#### Radium
+  * Adding radium: ```npm install --save radium```
+  * Wrap your App around Radium
+  * Radium lets you use hover and other psuedoselectors and media queries
+  * For media queries, you also have to import StyleRoot and wrap your return in App.js around that html element 
+   * The style is being applied inside Person.js and Person.js has to be wrapped around Radium as well
 
-  // Displaying the persons conditionally
-  togglerPersonsHandler = () => {
-    const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow})
-  }
-
-  render() {
-    // Using in line styles
-    // Not use normally, but if you only want to change the button in this class and not all the buttons
-    const style = {
-      backgroundColor: 'green', // default color
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer'
+#### Enabling CSS Modules
+  * Can do everything you do using Radium, using scopped CSS styles as well (The Radium bits have been commented out)
+  * ```npm run eject``` Go to config/webpack.config.js and edit the cssRegex entry to:
+    ```JavaScript
+    {
+      test: cssRegex,
+      exclude: cssModuleRegex,
+      use: getStyleLoaders({
+          importLoaders: 1,
+          modules: true,
+          localIdentName: '[name]__[local]__[hash:base64:5]'
+      }),
     }
-
-    // Showing content conditionally
-    let persons = null;
-    if (this.state.showPersons) {
-      persons = (
-        // Placing persons inside the div for conditional display
-        // This renders the component person on to the main html 
-        // Can pass in dyanmic properties to the child component like person.name
-        <div>
-          {/* Mapping the javascript persons array to JSX person element */}
-          {this.state.persons.map((person, index) => {
-            return <Person 
-              // Doesn't have to be called click
-              // Called click because child component expects the property as props.click
-              click={() => this.deletePersonHandler(index)}
-              name={person.name}
-              age={person.age} 
-              // We assign everything a key so that React knows which element to update
-              // Otherwise it ends up reloading the entire dom
-              key={person.id}
-              // Pass a change in state function to the child component
-              // Called changed because child component expects the property as props.changed
-              changed={(event) => this.nameChangedHandler(event, person.id)} />
-          })}
-        </div> 
-      );
-      style.backgroundColor= 'red' //Changing style conditionally
-    }
-
-    // red and bold are the class names defined in our App.css
-    // As you push each of these styles to the classes,
-    // The HTML element p with the className classes gets those styles added to it
-    let classes = []
-    if (this.state.persons.length <= 2) {
-      classes.push('red');
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push('bold');
-    }
-
-    return ( // JSX is HTML-like, not exact HTML
-      // Class in HTML is renamed to className
-      // Typically everything is wrapped inside one root div as convention
-      <div className="App"> 
-        <h1>Welcome to React</h1> 
-        {/* We need the .join to make the p have multiple styles, not just the most recent element pushed */}
-        <p className={classes.join(' ')}>This is really working!</p>
-        {/* Call the function to change the component state */}
-        {/* Another way of storing the change of state */}
-        {/* Bind is more performance efficient */}
-        {/* style adds the inline style */}
-        <button
-          style={style}
-          onClick={() => this.togglerPersonsHandler()}>Toggle Persons
-        </button>
-        {persons} {/* Refers to the let persons = null variable we declared */}
-      </div>
-    );
-  }
-}
-export default Radimum(App); //Radium wraps around your app
-```
-
-#### Person.js
-```JavaScript
-import React from 'react';
-import './Person.css';
-// Import the css in the component not the main class
-
-const person = (props) => {
-  return (
-    // Giving the div a class name for easy css styling
-    <div className="Person">
-    {/* Can pass in methods and props */}
-    {/* Can replace props.age with Math.floor(Math.random()*30) to run JS code */}
-      <p onClick={props.click}>I'm {props.name} and I am {props.age} years old</p>
-      {/* Reserved word for html content passed in*/}
-      <p>{props.children}</p>
-      {/* Add an input text box, and onChange, change it's value */}
-      {/* Two way binding, value is set to props.name */}
-      <input type="text" onChange={props.changed} value={props.name}></input>
-    </div>
-  )
-}
-
-export default person;
-```
-
-#### Person.css
-```css
-.Person {
-    width: 60%;
-    margin: 16px auto; /* To center the object */
-    border: 1px solid #eee;
-    box-shadow: 0 2px 3px #ccc;
-    padding: 16px;
-    text-align: center;
-}
-```
-
-#### App.css
-```css
-.App {
-  text-align: center;
-}
-
-.red {
-  color: red;
-}
-
-.bold {
-  font-weight: bold;
-}
-```
+    ```
+  * npm run start to update the config after making the change (commented out the Radium way of doing it) 
+  * Using CSS modules without ejecting: https://facebook.github.io/create-react-app/docs/adding-a-css-modules-stylesheet
+  * Modify the import to ```import styles from './App.css```
+  * Set the className of App.js in the return to: styles.App 
+    * Do these two steps for Person.js as well 
+  * To access the class red, use styles.red, not 'red'
+  * Define the new styles in App.css, and add them to the HTML using: className={btnClass}
+  * Conditionally change the value of btnClass using ```btnClass = styles.Red``` or ```btnClass = ''``` to remove the styling
+  
+### Debugging React Apps
