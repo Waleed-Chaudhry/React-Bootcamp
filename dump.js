@@ -41,3 +41,31 @@ const style = {
 <div className="Person" style={style}>
   
 export default Radium(person);
+
+// Functional Persons, before the LifeCycle Update lecture
+import React from 'react';
+import Person from './Person/Person'
+
+const persons = (props) => { 
+    console.log('Persons.js: rendering')
+    return props.persons.map((person, index) => {
+    // Mapping the javascript persons array to JSX person element
+    // Can pass in dyanmic properties to the child component like person.name
+        return (<Person 
+            // Doesn't have to be called click
+            // Called click because child component expects the property as props.click
+            click={() => props.clicked(index)}
+            name={person.name}
+            age={person.age} 
+            // We assign everything a key so that React knows which element to update
+            // Otherwise it ends up reloading the entire dom
+            key={person.id}
+            // Pass a change in state function to the child component
+            // Called changed because child component expects the property as props.changed
+            changed={(event) => props.changed(event, person.id)} />
+        )
+    })
+};
+
+export default persons;
+
