@@ -40,7 +40,7 @@ myPerson.call()
 ```
 
 ### Spread and Rest Operators
-* Spread
+#### Spread
 ```JavaScript
 const numbers = [1,2,3]
 const newNumbers = [... numbers, 4]
@@ -61,7 +61,7 @@ console.log(newPerson)
 //   name: "Max"
 // }
 ```
-* Rest
+#### Rest
 ```JavaScript
 // Creates an array called the name inside the function variables from a number of arguments passed to the function
 const filter = (...args) => {
