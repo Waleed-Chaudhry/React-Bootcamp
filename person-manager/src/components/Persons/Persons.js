@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Person from './Person/Person'
 
-class Persons extends Component {
+class Persons extends PureComponent {
     // CU (Component Update) Step 1
     // static getDerivedStateFromProps(props, state) {
     //     console.log('Persons.js: Get Derived State')
@@ -10,10 +10,15 @@ class Persons extends Component {
     // Commented out to not have an error in the log
 
     // CU (Component Update) Step 2
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log('Persons.js: Should Component Update')
-        return true //Must return true or false, can set to false to prevent an update
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('Persons.js: Should Component Update')
+    //     // Will now only update one persons property changes, not when other other things change
+    //     if (nextProps.persons !== this.props.persons) {
+    //         return true //Must return true or false, can set to false to prevent an update
+    //     }
+    //     return false
+    // }
+    // Commented out since PureComponent already implements a component that only updates when an input state pertaining to that component changes
 
     // CU: Step 4
     getSnapshotBeforeUpdate(prevProps, prevState) {
@@ -25,6 +30,11 @@ class Persons extends Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log('Persons.js: Component did Update')
         console.log(snapshot)
+    }
+
+    // CU: Step 6
+    componentWillUnmount() {
+        console.log('Persons.js: Component will Unmount ')
     }
 
     // CU: Step 3

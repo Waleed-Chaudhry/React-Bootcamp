@@ -2,6 +2,7 @@ import React, { Component } from 'react'; // Behind the scenes, react calls Reac
 import styles from './App.css'; //Can call it anything
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import WithClass from '../hoc/WithClass';
 
 class App extends Component {
   // CC (Component Creation): Step 1
@@ -93,13 +94,15 @@ class App extends Component {
     return ( // JSX is HTML-like, not exact HTML
       // Class in HTML is renamed to className
       // Typically everything is wrapped inside one root div as convention
-        <div className={styles.App}>  {/* To use CSS Modules */}
+        // <div className={styles.App}>  {/* To use CSS Modules */}
+        <WithClass classes={styles.App}> {/* Wrapping the whole thing inside an HOC */}
           <Cockpit 
             showPersons={this.state.showPersons}
-            persons={this.state.persons}
+            personsLength={this.state.persons.length}
             clicked={this.togglerPersonsHandler}/>
           {persons} {/* Refers to the let persons = null variable we declared */}
-        </div>
+        </WithClass>
+        // </div>
     );
   }
 }
