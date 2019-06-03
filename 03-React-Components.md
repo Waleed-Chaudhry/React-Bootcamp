@@ -38,7 +38,13 @@ name={person.name} //in Persons.js
 
 #### Misc
 * The real DOM is only changed when there is a real difference to the DOM. Calling the render() method doesn't necessarily re-render the whole thing
+* Always use prevState instead of this.state to change a state property that depends on its previous version (nameChangeHandler in app.js)
+* Can add property validation (Person.js) ```npm install --save prop-types```
+* 
+#### Higher Order Components
 * Can create Aux component as a parent to wrap different JSX elements if you don't want to create a div (in Person.js)
   * Can also use React.Fragment to do the same thing
 * Aux is a higher order function i.e. a component that wraps another component. Another example is WithClass which is used to wrap the components in App.js
   * HOC components become very useful to wrap around our components to handle HTTP errors
+  * They can also be used to wrap CSS styles (in App.js using withClass)
+  * Can also wrap components and pass in properties (Person.js)
