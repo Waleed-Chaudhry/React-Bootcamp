@@ -16,13 +16,29 @@ name={person.name} //in Persons.js
   ```<div className={styles.Cockpit}>``` and you style the element using ```.Cockpit button``` in your CSS file
   
 ### Component Lifecycle
-#### Creation
+#### Class Based Components Creation
 * constructor -> getDerivedStateFromProps -> render() -> componentDidMount
 
-#### Update
+#### Classed Based Components Update
 * When props or state change, the component goes through the update cycle
 * getDerivedStateFromProps -> shouldComponentUpdate -> render() -> getSnapshotBeforeUpdate -> componentDidUpdate
 * componentDidUpdate is the most common one we'll use to fetch something after the DOM has updated
 * Remember updating Person.js updates the Person.js which calls its update LC which in turn updates App.js which also calls its update LC
+* componentWillUnmount() is run right before the component is hidden from the DOM
+* You can optimize shouldComponentUpdate to only run when certain properties on the state change
+* You can extend PureComponent instead of Component to update the component only when an input state pertaining to that component changes
 
 #### Functional Components Lifecycle
+* Can't use any of the class based components LC hooks
+* Instead we use useEffect (Cockpit.js in our code)
+* Remember functional components have to start with a Capital letter const Cockpit = (props) for useEffect to work
+* Can be configured to only run when a given prop changes or only the first time the component is rendered, or do clean up work before the component is removed from the DOM
+* Can have multiple useEffects in one component
+* Wrap the export of a functional component around React.memo to optimize it to only update when an input state pertaining to that component changes
+
+#### Misc
+* The real DOM is only changed when there is a real difference to the DOM. Calling the render() method doesn't necessarily re-render the whole thing
+* Can create Aux component as a parent to wrap different JSX elements if you don't want to create a div (in Person.js)
+  * Can also use React.Fragment to do the same thing
+* Aux is a higher order function i.e. a component that wraps another component. Another example is WithClass which is used to wrap the components in App.js
+  * HOC components become very useful to wrap around our components to handle HTTP errors
