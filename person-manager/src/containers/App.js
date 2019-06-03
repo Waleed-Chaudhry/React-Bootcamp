@@ -2,7 +2,8 @@ import React, { Component } from 'react'; // Behind the scenes, react calls Reac
 import styles from './App.css'; //Can call it anything
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-import WithClass from '../hoc/WithClass';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
 class App extends Component {
   // CC (Component Creation): Step 1
@@ -14,12 +15,13 @@ class App extends Component {
   state = { // Managed from within the class only, it's only available for class (non-functional components)
     // Used to let us change our HTML dynamically inside the parent class 
     persons: [
-      { "id": 1, name:  "Max", age: "28" },
-      { "id": 2, name: "Manu", age: "29" },
+      { "id": 1, name:  "Max", age: 28 },
+      { "id": 2, name: "Manu", age: 29 },
       { "id": 3, name: "Waleed", age: "24" }
     ],
     otherState: 'some other value',
-    showPersons: false //To control the conditional display of persons
+    showPersons: false, //To control the conditional display of persons
+    changeCounter: 0 //To count number of key strokes
   }
 
   // CC: Step 2 CU: Step 1
@@ -68,7 +70,13 @@ class App extends Component {
     person.name = event.target.value // Create a copy of the person to not mutate te state directly
     const persons = [...this.state.persons];
     persons[personIndex] = person;
-    this.setState({persons: persons}) // Will only change the persons object, not the otherState var
+    this.setState((prevState, props) => {
+      return {
+        persons: persons, // Will only change the persons object, not the otherState var
+        // changeCounter: this.state.changeCounter + 1 //Don't do this
+        changeCounter: prevState.changeCounter + 1 //Don't do this
+      }
+    }) 
   }
 
   // Displaying the persons conditionally
@@ -95,16 +103,18 @@ class App extends Component {
       // Class in HTML is renamed to className
       // Typically everything is wrapped inside one root div as convention
         // <div className={styles.App}>  {/* To use CSS Modules */}
-        <WithClass classes={styles.App}> {/* Wrapping the whole thing inside an HOC */}
+        // <WithClass classes={styles.App}> {/* Wrapping the whole thing inside an HOC */}
+        <Aux>
           <Cockpit 
             showPersons={this.state.showPersons}
             personsLength={this.state.persons.length}
             clicked={this.togglerPersonsHandler}/>
           {persons} {/* Refers to the let persons = null variable we declared */}
-        </WithClass>
+        </Aux>
+        // </WithClass>
         // </div>
     );
   }
 }
 
-export default App
+export default withClass(App, styles.App) //withClass is a higher Order function we're wrapping App.js around

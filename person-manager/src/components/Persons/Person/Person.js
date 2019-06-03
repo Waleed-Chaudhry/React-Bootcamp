@@ -1,5 +1,8 @@
 import React, {Fragment} from 'react';
 // import Aux from '../../../hoc/Aux' 
+import styles from './Person.css'
+import withClass from '../../../hoc/withClass';
+import PropTypes from 'prop-types';
 
 const person = (props) => {
   console.log('Person.js: rendering...')
@@ -23,4 +26,10 @@ const person = (props) => {
   )
 }
 
-export default person;
+person.propTypes = {
+  click: PropTypes.func, // Pointer to a function
+  name: PropTypes.string,
+  age: PropTypes.number
+};
+
+export default withClass(person, styles.Person);
