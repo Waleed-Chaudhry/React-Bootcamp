@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
-import Modal from '../../components/UI/Modal/Modal';
-import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
+import Modal from '../../components/UI/Modal/Modal'
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
 // Map to keep track of price of each ingredient
 const INGREDIENT_PRICES = {
@@ -28,17 +28,17 @@ class BurgerBuilder extends Component {
   }
 
   /* Determine if the burger is purchaseable i.e. has at least one ingredient */
-  updatePurchaseState(ingredients) {
+  updatePurchaseState (ingredients) {
     /* Fancy code to simply sum up all the ingredients */
     const sum = Object.keys(ingredients)
       .map(igKey => {
-        return ingredients[igKey];
+        return ingredients[igKey]
       })
       .reduce((sum, el) => {
-        return sum + el;
-      }, 0);
+        return sum + el
+      }, 0)
     // If we have more than one ingredient, the burger is purchaseable
-    this.setState({ purchasable: sum > 0 });
+    this.setState({ purchasable: sum > 0 })
   }
 
   /* Build Control Handlers */
@@ -46,54 +46,54 @@ class BurgerBuilder extends Component {
   // Called when we click More
   addIngredientHandler = (type) => {
     /* Update the State to increase the ingredient count */
-    const oldCount = this.state.ingredients[type]; //number of ingredients of a given type
-    const updatedCount = oldCount + 1;
-    const updatedIngredients = { ...this.state.ingredients }; //state should be updated in an immutable way
-    updatedIngredients[type] = updatedCount; //Updating the newly created object instead of the state
+    const oldCount = this.state.ingredients[type] // number of ingredients of a given type
+    const updatedCount = oldCount + 1
+    const updatedIngredients = { ...this.state.ingredients } // state should be updated in an immutable way
+    updatedIngredients[type] = updatedCount // Updating the newly created object instead of the state
 
     /* Update the Total Price of the burger */
-    const priceAddition = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice + priceAddition;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients }); //Finally updating the state with the new objects created
-    this.updatePurchaseState(updatedIngredients);
+    const priceAddition = INGREDIENT_PRICES[type]
+    const oldPrice = this.state.totalPrice
+    const newPrice = oldPrice + priceAddition
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients }) // Finally updating the state with the new objects created
+    this.updatePurchaseState(updatedIngredients)
   }
 
   // Called when we click less, same logic as addIngredientHandler
   removeIngredientHandler = (type) => {
-    const oldCount = this.state.ingredients[type];
-    if (oldCount <= 0) { return } //Must be a JSON Object to avoid type error
-    const updatedCount = oldCount - 1;
-    const updatedIngredients = { ...this.state.ingredients };
-    updatedIngredients[type] = updatedCount;
-    const priceDeduction = INGREDIENT_PRICES[type];
-    const oldPrice = this.state.totalPrice;
-    const newPrice = oldPrice - priceDeduction;
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
-    this.updatePurchaseState(updatedIngredients);
+    const oldCount = this.state.ingredients[type]
+    if (oldCount <= 0) { return } // Must be a JSON Object to avoid type error
+    const updatedCount = oldCount - 1
+    const updatedIngredients = { ...this.state.ingredients }
+    updatedIngredients[type] = updatedCount
+    const priceDeduction = INGREDIENT_PRICES[type]
+    const oldPrice = this.state.totalPrice
+    const newPrice = oldPrice - priceDeduction
+    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
+    this.updatePurchaseState(updatedIngredients)
   }
 
   // Called when we click Order Now
   purchaseHandler = () => {
-    this.setState({purchasing: true});
+    this.setState({ purchasing: true })
   }
 
   // Called when we click the modal that appears after we click OrderNow
   // i.e. we're now canceling the order
   // Or when we click Cancel on the modal
   purchaseCancelHandler = () => {
-      this.setState({purchasing: false});
+    this.setState({ purchasing: false })
   }
 
   // Called when we click Contine on the Modal
   purchaseContinueHandler = () => {
-    alert('You continue!');
+    alert('You continue!') // eslint-disable-line
   }
 
-  render() {
+  render () {
     // Logic to disable the less Button in case the count is 0 or less
     // We're creating an object like: {salad: true, meat: false, ...}
-    const disabledInfo = { ...this.state.ingredients };
+    const disabledInfo = { ...this.state.ingredients }
     for (let ingredient in disabledInfo) {
       disabledInfo[ingredient] = disabledInfo[ingredient] <= 0
     }
