@@ -80,8 +80,7 @@ class BurgerBuilder extends Component {
   
   /* 
    * Render method actually renders all the components to the HTML
-   * Note that there is only one render in the project
-   * App and functional components simpy have a return function without a render method
+   * App and functional components simply have a return function without a render method
    */
   render () {
     return (
