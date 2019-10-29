@@ -10,11 +10,12 @@ npm run start //Starts the app on localhost:3000 // the webpage auto reloads, wh
 * Each component gets created inside a new folder starting with an uppercase character e.g. BurgerBuilder
 * Anytime you have {} inside JSX that means you can write JS code in there
 
-```JSX
 ### App
+```JSX
 /* 
  * The app component should be incredibly simple as shown here
- * Should ideally just return the Container (Burger Builder wrapped in
+ * Should ideally just return the Container (Burger Builder)
+ * Wrapped around a functional layout object
  */
 import React from 'react'
 import Layout from './components/Layout/Layout'
@@ -29,9 +30,10 @@ function App () {
     </div>
   )
 }
-```
 
 export default App
+```
+
 ### Containers
 
 #### Burger Builder
