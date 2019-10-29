@@ -205,7 +205,7 @@ const buildControls = (props) => (
          * That is the BuildControl button, which on click receives the added property from BuildControl
          * This receiving causes the invoking of the function and hence the updating of the state
          * The state is then used passed to Burger Ingredient by BurgerBuilder via Burger to actually render the inredient we just clicked
-         *
+         */
         added={() => props.ingredientAdded(ctrl.type)}
     ))}
   </div>
