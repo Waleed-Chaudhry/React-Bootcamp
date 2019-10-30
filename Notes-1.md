@@ -232,3 +232,58 @@ const buildControl = (props) => (
 
 export default buildControl
 ```
+
+### Other Snipets/Best Practices
+
+#### Conditional CSS Styling
+```JSX
+/*
+ * The following snippet is used to conditionally add styling from the follow CSS class
+ * Styling is only added if props.active is true
+ */
+import classes from './NavigationItem.module.css';
+
+<li className={classes.NavigationItem}>
+    <a 
+        href={props.link} 
+        className={props.active ? classes.active : null}>{props.children}</a>
+</li>
+```
+```CSS    
+.NavigationItem a.active {
+  color: white;
+}
+```
+
+#### Adding an image
+```JSX
+/* 
+ * Its better performance wise to import the source image
+ * And then refer to the variable inside the src tag on the html
+ */
+import burgerLogo from '../../assets/images/burger-logo.png';
+import classes from './Logo.module.css';
+
+const logo = (props) => (
+    /* 
+     * Logo CSS class adds the default styling to the logog
+     * However, you can dynamically override the height using the state
+     * You would do this in case you have the same logo in multiple places in the project
+     * But only want to change its height in diferent places
+     * The component is created like <Logo height="80%" />
+     */
+    <div className={classes.Logo} style={{height: props.height}}>
+        <img src={burgerLogo} alt="MyBurger" />
+    </div>
+);
+```
+
+#### Setting new state when it depends on the current state
+```JSX
+/* Setting the new state by directly using the previous state can lead to strange behavior */
+SideDrawerToggleHandler = () => {
+  this.setState((prevState) => {
+    return { showSideDrawer: !prevState.showSideDrawer }
+  })
+}
+```
