@@ -201,7 +201,7 @@ const buildControls = (props) => (
       <BuildControl
         /* Invoking the handler in Burger Builder
          * We're passing ctrl.type to the handler since the handler function definition expects the type
-         * We still need to delegate this invoking upon clicking smoething on an HTML
+         * We still need to delegate this invoking upon clicking something on an HTML
          * That is the BuildControl button, which on click receives the added property from BuildControl
          * This receiving causes the invoking of the function and hence the updating of the state
          * The state is then used passed to Burger Ingredient by BurgerBuilder via Burger to actually render the inredient we just clicked
