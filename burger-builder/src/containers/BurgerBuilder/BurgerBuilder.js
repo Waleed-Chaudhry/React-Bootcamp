@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 
-import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
@@ -28,6 +27,7 @@ class BurgerBuilder extends Component {
   }
 
   /* Determine if the burger is purchaseable i.e. has at least one ingredient */
+  /* This is just a helper function, not a handler */
   updatePurchaseState (ingredients) {
     /* Fancy code to simply sum up all the ingredients */
     const sum = Object.keys(ingredients)
@@ -99,7 +99,7 @@ class BurgerBuilder extends Component {
     }
 
     return (
-      <Aux>
+      <React.Fragment>
         <Burger ingredients={this.state.ingredients} />
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
           {/* Model only gets displayed if state is purchasing i.e. Order Button has been clicked */}
@@ -117,7 +117,7 @@ class BurgerBuilder extends Component {
           disabled={disabledInfo}
           purchasable={this.state.purchasable}
           price={this.state.totalPrice} />
-      </Aux>
+      </React.Fragment>
     )
   }
 }

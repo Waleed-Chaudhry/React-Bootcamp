@@ -2,11 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import classes from './Modal.module.css'
-import Aux from '../../../hoc/Aux'
 import Backdrop from '../Backdrop/Backdrop'
 
 const modal = (props) => (
-  <Aux>
+  <React.Fragment>
     <Backdrop show={props.show} clicked={props.modalClosed} />
     <div className={classes.Modal}
       style={{ // Set the style to show or hide the model
@@ -15,7 +14,7 @@ const modal = (props) => (
       }}>
       {props.children} {/* Render the JSX within the Modal Component in BurgerBuilderpr.js */}
     </div>
-  </Aux>
+  </React.Fragment>
 )
 
 modal.propTypes = {
