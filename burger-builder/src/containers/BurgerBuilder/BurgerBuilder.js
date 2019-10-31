@@ -4,6 +4,9 @@ import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
+import Spinner from '../../components/UI/Spinner/Spinner';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import axios from '../../axios-orders';
 
 // Map to keep track of price of each ingredient
 const INGREDIENT_PRICES = {
@@ -23,7 +26,8 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 4, // Base Price of the burger
     purchasable: false, // Determines whether we can purchase the burger
-    purchasing: false // If the order now button was clicked
+    purchasing: false, // If the order now button was clicked
+    loading: false // To display the spinner while posting the order summary
   }
 
   /* Determine if the burger is purchaseable i.e. has at least one ingredient */
@@ -87,8 +91,30 @@ class BurgerBuilder extends Component {
 
   // Called when we click Contine on the Modal
   purchaseContinueHandler = () => {
-    alert('You continue!') // eslint-disable-line
-  }
+    // alert('You continue!');
+    this.setState( { loading: true } );
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      customer: {
+        name: 'Max Schwarzmüller',
+        address: {
+          street: 'Teststreet 1',
+          zipCode: '41351',
+          country: 'Germany'
+        },
+        email: 'test@test.com'
+      },
+      deliveryMethod: 'fastest'
+    }
+    axios.post( '/orders.json', order )
+      .then( response => {
+        this.setState( { loading: false, purchasing: false } );
+      } )
+      .catch( error => {
+        this.setState( { loading: false, purchasing: false } );
+      } );
+}
 
   render () {
     // Logic to disable the less Button in case the count is 0 or less
@@ -98,17 +124,21 @@ class BurgerBuilder extends Component {
       disabledInfo[ingredient] = disabledInfo[ingredient] <= 0
     }
 
+    let orderSummary =  <OrderSummary
+      ingredients={this.state.ingredients}
+      price={this.state.totalPrice}
+      purchaseCancelled={this.purchaseCancelHandler}
+      purchaseContinued={this.purchaseContinueHandler} />
+    if (this.state.loading) {
+      orderSummary = <Spinner/>
+    }
     return (
       <React.Fragment>
         <Burger ingredients={this.state.ingredients} />
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
           {/* Model only gets displayed if state is purchasing i.e. Order Button has been clicked */}
           {/* We only pass in the cancelHander so that the backdrop can cancel the order */}
-          <OrderSummary
-            ingredients={this.state.ingredients}
-            price={this.state.totalPrice}
-            purchaseCancelled={this.purchaseCancelHandler}
-            purchaseContinued={this.purchaseContinueHandler} />
+          {orderSummary}
         </Modal >
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
@@ -122,4 +152,4 @@ class BurgerBuilder extends Component {
   }
 }
 
-export default BurgerBuilder
+export default withErrorHandler(BurgerBuilder, axios)
