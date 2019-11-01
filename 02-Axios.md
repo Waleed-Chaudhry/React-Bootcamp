@@ -170,6 +170,6 @@ axios.interceptors.request.use(request => {
 // Copy paste the above with request replaced with response to handle responses i.e. GETs
 ```
 
-#### Other notes
+### Other notes
 * npm install axios --save
 * Another common place to call an endpoint is in the body of click listner handler
