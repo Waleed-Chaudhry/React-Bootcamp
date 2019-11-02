@@ -140,7 +140,8 @@ componentWillMount () {
     // Pass whatever url you're on. Final path would be /checkout/contract-data if you call the route from /checkout
     render={(props) => (<ContactData ingredients={this.state.ingredients} price={this.state.totalPrice} {...props} />)} 
     // A way to pass the state to the Contact Data form
-    // Contact data can then call this.props.history.push('/') to get you back to the home page
+    // Contact data can then use the passed ingredients and price
+    // Contact data can also now call this.props.history.push('/') to get you back to the home page
 />
 ```
 
