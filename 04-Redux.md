@@ -95,7 +95,7 @@ export default reducer;
 ```
 
 #### Actions
-* Connects the stateful component to 
+* Connects the stateful component to the store
 ```JSX
 import { connect } from 'react-redux'
 import * as actionTypes from '../../store/actions';
@@ -109,7 +109,7 @@ const mapStateToProps = state => { //Has to be named state, passed in by react r
 }
 
 /* Dispatching actions in this container */
-const mapDispatchToProps = dispatch => { //Has to name dispatch, passed in by react redux
+const mapDispatchToProps = dispatch => { //Has to named dispatch, passed in by react redux
   return {
       /* 
        * Each action should have a dispatch 
