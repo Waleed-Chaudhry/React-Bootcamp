@@ -29,7 +29,8 @@ const app = (
 ```
 
 #### reducer.js
-* Reducer receives actions, and updates the state
+* Reducer receives actions, cases over each of them and updates the state
+* Think of it as the function implementation of the action
 * Create reducer inside src/store dir
 ```JSX
 import * as actionTypes from './actions';
@@ -96,6 +97,7 @@ export default reducer;
 
 #### Actions
 * Connects the stateful component to the store
+* Think of it as the function call to the method 
 ```JSX
 import { connect } from 'react-redux'
 import * as actionTypes from '../../store/actions';
