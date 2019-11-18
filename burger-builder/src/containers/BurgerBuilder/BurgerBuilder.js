@@ -127,9 +127,9 @@ class BurgerBuilder extends Component {
 /* Receives the state from store */
 const mapStateToProps = state => { //Has to be named state, passed in by react redux
   return {
-      ings: state.ingredients, //Stores the ingredients from the state in object with prop ing
-      price: state.totalPrice,
-      error: state.error
+      ings: state.burgerBuilder.ingredients, //Stores the ingredients from the state in object with prop ing
+      price: state.burgerBuilder.totalPrice,
+      error: state.burgerBuilder.error
   };
 }
 
@@ -144,7 +144,8 @@ const mapDispatchToProps = dispatch => { //Has to name dispatch, passed in by re
        */
       onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
       onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
-      onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients())
+      onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
+      onInitPurchase: () => dispatch(burgerBuilderActions.purchaseInit())
     };
 };
 

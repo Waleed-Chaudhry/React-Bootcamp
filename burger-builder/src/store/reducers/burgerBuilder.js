@@ -38,10 +38,29 @@ const reducer = ( state = initialState, action ) => {
                 },
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             };
+        case actionTypes.REMOVE_INGREDIENT:
+            console.log('remove ing reduc')
+            return {
+                ...state,
+                ingredients: {
+                    ...state.ingredients, 
+                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
+                },
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
+            };
         case actionTypes.SET_INGREDIENTS:
             return {
                 ...state, //Copy old state and copy ingredients
-                ingredients: action.ingredients,
+                // Can also do ingredienets: action.ingredients
+                // Doing it this way to be able to set the order
+                // i.e. salad first, then bacon...
+                ingredients: {
+                    salad: action.ingredients.salad,
+                    bacon: action.ingredients.bacon,
+                    cheese: action.ingredients.cheese,
+                    meat: action.ingredients.meat
+                },
+                totalPrice: 4,         
                 error: false
             };
         case actionTypes.FETCH_INGREDIENTS_FAILED:
