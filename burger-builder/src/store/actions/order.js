@@ -65,20 +65,20 @@ export const fetchOrdersStart = () => {
 
 export const fetchOrders = () => {
 	return dispatch => {
-			dispatch(fetchOrdersStart());
-			axios.get( '/orders.json' )
-					.then( res => {
-							const fetchedOrders = [];
-							for ( let key in res.data ) {
-									fetchedOrders.push( {
-											...res.data[key],
-											id: key
-									} );
-							}
-							dispatch(fetchOrdersSuccess(fetchedOrders));
-					} )
-					.catch( err => {
-							dispatch(fetchOrdersFail(err));
+		dispatch(fetchOrdersStart());
+		axios.get( '/orders.json' )
+			.then( res => {
+				const fetchedOrders = [];
+				for ( let key in res.data ) {
+					fetchedOrders.push( {
+						...res.data[key],
+						id: key
 					} );
+				}
+				dispatch(fetchOrdersSuccess(fetchedOrders));
+			} )
+			.catch( err => {
+					dispatch(fetchOrdersFail(err));
+			} );
 	};
 };

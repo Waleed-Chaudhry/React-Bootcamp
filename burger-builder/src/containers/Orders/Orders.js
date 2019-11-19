@@ -1,44 +1,51 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'; // new import
 
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../store/actions/index'; // new import
+import Spinner from '../../components/UI/Spinner/Spinner';
 
 class Orders extends Component {
-    state = {
-        orders: [],
-        loading: true
-    }
-
     componentDidMount() {
-        axios.get('/orders.json')
-            .then(res => {
-                const fetchedOrders = [];
-                for (let key in res.data) {
-                    fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                    });
-                }
-                this.setState({loading: false, orders: fetchedOrders});
-            })
-            .catch(err => {
-                this.setState({loading: false});
-            });
+        // Note use of this.props to access the onFetchOrders method
+        this.props.onFetchOrders();
     }
 
     render () {
+        let orders = <Spinner />;
+        // Note use of this.props to access orders and loading
+        if ( !this.props.loading ) {
+            orders = this.props.orders.map( order => (
+                <Order
+                    key={order.id}
+                    ingredients={order.ingredients}
+                    price={order.price} />
+            ) )
+        }
         return (
             <div>
-                {this.state.orders.map(order => (
-                    <Order 
-                        key={order.id}
-                        ingredients={order.ingredients}
-                        price={order.price} />
-                ))}
+                {orders}
             </div>
         );
     }
 }
 
-export default withErrorHandler(Orders, axios);
+const mapStateToProps = state => {
+    // state.orders.orders is the what we're getting from the reducer
+    // And then storing it as orders inside this file
+    // Within this file we'll use this.props.orders to refer to the orders object on the state
+    return {
+        orders: state.order.orders,
+        loading: state.order.loading
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchOrders: () => dispatch( actions.fetchOrders() )
+    };
+};
+
+export default connect( mapStateToProps, mapDispatchToProps )( withErrorHandler( Orders, axios ) );
