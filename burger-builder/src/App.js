@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+/* React Router Imports */
 import { Route, Switch } from 'react-router-dom';
 
+/* Project Specific Imports */
 import Layout from './containers/Layout/Layout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 import Checkout from './containers/Checkout/Checkout';
@@ -10,8 +12,7 @@ class App extends Component {
   render () {
     return (
       <div>
-        {/* Layout is always loaded for each route */}
-        <Layout>
+        <Layout> {/* Layout is always loaded for each route in our project */}
           <Switch>
             {/* Switch renders the first component that matches the path inside the layout
               * i.e. the mainpage will only contain Burger builder

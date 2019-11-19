@@ -12,11 +12,13 @@ import * as burgerBuilderActions from '../../store/actions/index';
 
 class BurgerBuilder extends Component {
   state = {
-    // purchasable: false, // Determines whether we can purchase the burger
+    // Local state used by this component only, not the best practice
+    // Ideally everything should be local but just showing this is possible
     purchasing: false, // If the order now button was clicked
   }
 
   componentDidMount () {
+    // Note use of this.props onInitIngredients method
     this.props.onInitIngredients();
   }
 
@@ -35,48 +37,18 @@ class BurgerBuilder extends Component {
     return sum > 0
   }
 
-  /* Build Control Handlers
-
-  // Called when we click More
-  addIngredientHandler = (type) => {
-    // Update the State to increase the ingredient count
-    const oldCount = this.state.ingredients[type] // number of ingredients of a given type
-    const updatedCount = oldCount + 1
-    const updatedIngredients = { ...this.state.ingredients } // state should be updated in an immutable way
-    updatedIngredients[type] = updatedCount // Updating the newly created object instead of the state
-
-    // Update the Total Price of the burger
-    const priceAddition = INGREDIENT_PRICES[type]
-    const oldPrice = this.state.totalPrice
-    const newPrice = oldPrice + priceAddition
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients }) // Finally updating the state with the new objects created
-    this.updatePurchaseState(updatedIngredients)
-  } 
-
-  // Called when we click less, same logic as addIngredientHandler
-  removeIngredientHandler = (type) => {
-    const oldCount = this.state.ingredients[type]
-    if (oldCount <= 0) { return } // Must be a JSON Object to avoid type error
-    const updatedCount = oldCount - 1
-    const updatedIngredients = { ...this.state.ingredients }
-    updatedIngredients[type] = updatedCount
-    const priceDeduction = INGREDIENT_PRICES[type]
-    const oldPrice = this.state.totalPrice
-    const newPrice = oldPrice - priceDeduction
-    this.setState({ totalPrice: newPrice, ingredients: updatedIngredients })
-    this.updatePurchaseState(updatedIngredients)
-  } */
+  /* Build Control Handlers */
 
   // Called when we click Order Now
   purchaseHandler = () => {
-    this.setState({ purchasing: true })
+    this.setState({ purchasing: true }) // local state variable
   }
 
   // Called when we click the modal that appears after we click OrderNow
   // i.e. we're now canceling the order
   // Or when we click Cancel on the modal
   purchaseCancelHandler = () => {
-    this.setState({ purchasing: false })
+    this.setState({ purchasing: false }) // local state variable
   }
 
   // Called when we click Contine on the Modal
@@ -95,6 +67,7 @@ class BurgerBuilder extends Component {
     let burger = this.props.error ? <p>Ingredients can't be loaded!</p> : <Spinner />;
 
     if ( this.props.ings ) {
+      // Note use of this.props.ings and this.props.onIngredientAdded to refer to the connected state 
       burger = (
         <React.Fragment>
           <Burger ingredients={this.props.ings} />
@@ -117,7 +90,7 @@ class BurgerBuilder extends Component {
       <React.Fragment>
         <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
           {orderSummary}
-        </Modal >
+        </Modal>
         {burger}
       </React.Fragment>
     )
@@ -127,21 +100,19 @@ class BurgerBuilder extends Component {
 /* Receives the state from store */
 const mapStateToProps = state => { //Has to be named state, passed in by react redux
   return {
-      ings: state.burgerBuilder.ingredients, //Stores the ingredients from the state in object with prop ing
+      ings: state.burgerBuilder.ingredients, 
+      // Stores the ingredients from the state in object with prop ing
+      // We can then use this.props.ings outside this method to refer to the ingredients object on the state
+      // the burgerBuilder in state.burgerBuilder.ingredients refers to the key as defined in the combine reducer method in index.js
       price: state.burgerBuilder.totalPrice,
-      error: state.burgerBuilder.error
   };
 }
 
 /* Dispatching actions in this container */
 const mapDispatchToProps = dispatch => { //Has to name dispatch, passed in by react redux
   return {
-      /* 
-       * Each action should have a dispatch 
-       * Type is the mandatory field and used to reducer's caste statement
-       * You also have to pass ingredientName since the reducer needs them to calculate state
-       * onIngredientAdded and ingName can be named anything
-       */
+      // We'll use this.props.onIngredientAdded outside the method 
+      // onIngredientAdded could have been named anything
       onIngredientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredient(ingName)),
       onIngredientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredient(ingName)),
       onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
@@ -151,12 +122,3 @@ const mapDispatchToProps = dispatch => { //Has to name dispatch, passed in by re
 
 /* Wrapping the export inside connect */
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler( BurgerBuilder, axios ));
-
-/*
- * Replace this.state.ingredients with this.props.ings
- * Replace this.state.totalPrice with this.props.price
- * Replace this.addIngredientHandler with this.props.onIngredientAdded
- * Replace this.removeIngredientHandler with this.props.onIngredientRemoved
- * Remove addIngredientHandler and removeIngredientHandler methods
- * Remove ingredients and totalPrice from the initial state since that bit of the state is being managed by redux
- */

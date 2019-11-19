@@ -7,13 +7,11 @@ import ContactData from './ContactData/ContactData';
 class Checkout extends Component {
 
     checkoutCancelledHandler = () => {
-        // Go to the previous page
-        this.props.history.goBack();
+        this.props.history.goBack(); // Go to the previous page
     }
 
     checkoutContinuedHandler = () => {
-        // Go to a different route
-        this.props.history.replace( '/checkout/contact-data' );
+        this.props.history.replace( '/checkout/contact-data' ); // Go to a different route
     }
 
     render () {

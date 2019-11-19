@@ -3,8 +3,7 @@ import { updateObject } from '../utility';
 
 const initialState = {
     ingredients: null,
-    totalPrice: 4,
-    error: false
+    totalPrice: 4
 };
 
 const INGREDIENT_PRICES = {
@@ -54,16 +53,13 @@ const fetchIngredientsFailed = (state, action) => {
 const reducer = ( state = initialState, action ) => {
     /* state = initialState sets a default value for the state 
      * Used when state is undefined in the function  call 
-     * Has to case over each of the action types
-     * You would need an action for each of the handlers that updates the state 
-     * e.g addIngredient and removeIngredient
      */
     switch ( action.type ) {
         case actionTypes.ADD_INGREDIENT: return addIngredient( state, action );
         case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
         case actionTypes.SET_INGREDIENTS: return setIngredients(state, action);    
         case actionTypes.FETCH_INGREDIENTS_FAILED: return fetchIngredientsFailed(state, action);
-        default: return state;
+        default: return state; // Very important to return state in case you want the state to be modified by a different reducer as you combine reducers
     }
 };
 
