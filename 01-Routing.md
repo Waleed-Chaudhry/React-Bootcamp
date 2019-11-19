@@ -1,5 +1,9 @@
 # Routing
 
+* Routing is a way of having multiple pages in a single page application
+* All you do is load certain components in App.js based on the route
+* You don't have to worry about passing the state to different components. That bit is handled by Redux
+
 ### Setup
 ```c
 npm install create-react-app -g //So that it's available from any dir on your computer
@@ -10,10 +14,6 @@ npm i react-router-dom --save //Installs the router dom
 * Inside src create components and containers dirs
 * Each component gets created inside a new folder starting with an uppercase character e.g. BurgerBuilder
 * Anytime you have {} inside JSX that means you can write JS code in there
-
-* Routing is a way of having multiple pages in a single page application
-* All you do is load certain components in App.js based on the route
-* You don't have to worry about passing the state to different components. That bit is handled by Redux
 
 ### Using Routing
 
