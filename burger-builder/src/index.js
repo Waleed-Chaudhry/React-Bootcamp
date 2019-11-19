@@ -10,7 +10,7 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import burgerBuilderReducer from './store/reducers/burgerBuilder';
-// import orderReducer from './store/reducers/order';
+import orderReducer from './store/reducers/order';
 
 // Enable the extension: 
 // https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
@@ -18,8 +18,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 /* Combine the Reducers */
 const rootReducer = combineReducers({
-    burgerBuilder: burgerBuilderReducer
-    // order: orderReducer
+    burgerBuilder: burgerBuilderReducer,
+    order: orderReducer
 });
 
 /* Create Store */

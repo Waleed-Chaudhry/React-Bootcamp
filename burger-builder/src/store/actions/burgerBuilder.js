@@ -2,7 +2,7 @@
 /* One per container */
 // Action just sets up the function call and the body, reducer implements it
 
-import * as actionTypes from './actionsTypes';
+import * as actionTypes from './actionTypes';
 import axios from '../../axios-orders';
 
 export const addIngredient = ( name ) => {

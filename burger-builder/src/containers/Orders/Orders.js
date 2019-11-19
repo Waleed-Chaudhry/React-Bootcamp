@@ -37,6 +37,8 @@ const mapStateToProps = state => {
     // And then storing it as orders inside this file
     // Within this file we'll use this.props.orders to refer to the orders object on the state
     return {
+        // We're doing state.order.orders since we're using combined reducers
+        // The order reducer is inside order object in index.js
         orders: state.order.orders,
         loading: state.order.loading
     };
