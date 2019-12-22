@@ -159,6 +159,7 @@ export {
 * There is a method implementation for each of the actions defined in actions/actionTypes.js
   * Uses the value of the action.state, and uses it to create a new object representing the updated state
 * The reducer cases over each of actions defined in actions/actionTypes.js and calls the appropriate method
+* Every change of state has to happen inside the reducer
 
 #### reducers/burgerBuilder
 ```JSX
