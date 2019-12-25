@@ -72,16 +72,20 @@ export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 export const SET_INGREDIENTS = 'SET_INGREDIENTS';
 export const FETCH_INGREDIENTS_FAILED = 'FETCH_INGREDIENTS_FAILED';
 ```
-* Note that the async initIngredients in actions/burgerBuilder.js is not an action type and not defined here
-* The async initIngredients is also not cased over in reducers/burgerBuilder.js
-* It is however exported by actions/index.js rather than setIngredients and fetchIngredientsFailed
-* The BurgerBuilder container calls initIngredients in its containerDidMount method
+* You need an action for every function that changes the state
+* Divide your actions into two types - sync handlers and async ones
+* Sync handlers run simple functions like increment a value on the state etc
+* Aync hanlders much async functions like making an axios request
+    * However after returning the axios call, the async handlers call a success sync handler e.g. SET_INGREDIENTS to add the ingredients to the state
+     * Or a failure sync handler e.g. FETCH_INGREDIENTS_FAILED to set the error state to be true
+* We export only the sync hander, including the ones called by the async one here, in all caps
 
 ### Step 2: Create the action creater in actions/burgerBuilder.js
-* Each action - sync or async has an a type as defined in actions/actionTypes.js
-* An action can also optionally have a payload. 
+* Each sync action has an a type as defined in actions/actionTypes.js
+* The sync action can also optionally have a payload. 
   * Think of this as the value that the reducer will need to update the state of the app
   * e.g. addIngredient action creater will need to pass the ingredientName to the reducer
+* The async handler does an async call (e.g. to axios) and then dispatches one of the two async functions depending on sucess or failure
 
 #### actions/burgerBuilder.js
 ```JSX
@@ -104,8 +108,6 @@ export const removeIngredient = ( name ) => {
     };
 };
 
-/* Async Handlers */
-
 // The set and failed is standard pattern for async handlers
 // Both of these setIngredients and fetchIngredientsFailed is called by the async initIngredients action
 export const setIngredients = ( my_ingredients ) => {
@@ -124,6 +126,7 @@ export const fetchIngredientsFailed = () => {
     };
 };
 
+/* Async Handlers */
 export const initIngredients = () => {
     return dispatch => {  // dispatch it available through redux thunk
         axios.get('https://burger-buider.firebaseio.com/ingedients.json')
@@ -139,7 +142,7 @@ export const initIngredients = () => {
 ```
 
 ### Step 3: Export the action creaters
-
+* Export the sync handlers not called by the async handler, and the async handlers from actions/burgerBuilder.js
 #### actions/index.js
 ```JSX
 export {
